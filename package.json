@@ -1,0 +1,14 @@
+{
+  "name": "discube",
+  "version": "1.0.0",
+  "description": "This is a version of the old CMU CS Cube bot developed for discord. It is intended to be used in the PS:1 + n friends server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^12.4.1"
+  }
+}
