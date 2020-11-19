@@ -1,4 +1,5 @@
 {
 	"prefix": "cube.",
-	"token": "Nzc5MDU3OTg1NjcwMzQ4ODMx.X7bASQ.ENiLkeF9ZrG7Y5SEL3J91ukTnA4"
+	"token": "process.env.BOT_TOKEN",
+	"database": "cubes.txt"
 }

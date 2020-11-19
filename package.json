@@ -9,6 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^12.4.1"
+    "count-lines-in-file": "^1.1.0",
+    "cron": "^1.8.2",
+    "discord.js": "^12.4.1",
+    "nthline": "^1.0.2"
   }
 }
