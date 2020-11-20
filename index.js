@@ -24,7 +24,7 @@ const nthline = require('nthline');
 const countLinesInFile = require('count-lines-in-file');
 client.once('ready', () => {
   console.log('Ready!');
-  var job = new CronJob('0,15,45,30 10-22 * * *', function() {
+  var job = new CronJob('0 10-22 * * *', function() {
     temp = countLinesInFile(database, async (error, number) => {
       index = Math.floor(Math.random() * number) + 1;
 			msg = await nthline(index, database);
