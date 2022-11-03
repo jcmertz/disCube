@@ -1,11 +1,14 @@
 const fs = require('fs');
 const Discord = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 var CronJob = require('cron').CronJob;
 const {
   prefix,
   token,
   database
 } = require('./config.json');
+cubesRaw = fs.readFileSync(database);
+cubes=JSON.parse(cubesRaw);
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 
@@ -20,8 +23,6 @@ for (const file of commandFiles) {
   client.commands.set(command.name, command);
 }
 
-const nthline = require('nthline');
-const countLinesInFile = require('count-lines-in-file');
 client.once('ready', () => {
   console.log('Ready!');
   //Section Below is commented out. It's function is to deliver cubes at specific times.
