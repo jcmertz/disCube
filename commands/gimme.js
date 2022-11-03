@@ -19,7 +19,7 @@ module.exports = {
       });
     } else {
       var temp = parseInt(args[0]);
-      sendMessage(temp,message);
+      await sendMessage(temp,message);
     }
   },
 };
