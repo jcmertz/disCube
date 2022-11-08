@@ -1,15 +1,24 @@
+#!/usr/bin/env node
 const fs = require('fs');
 const Discord = require('discord.js');
-const { EmbedBuilder } = require('discord.js');
+
 var CronJob = require('cron').CronJob;
 const {
   prefix,
   token,
-  database
+  database,
+  backupDatabase
 } = require('./config.json');
 cubesRaw = fs.readFileSync(database);
 cubes=JSON.parse(cubesRaw);
-const client = new Discord.Client();
+cubes.lastCubeIndex = 0;
+const client = new Discord.Client({
+	intents: [
+		Discord.GatewayIntentBits.Guilds,
+		Discord.GatewayIntentBits.GuildMessages,
+		Discord.GatewayIntentBits.MessageContent,
+	],
+});
 client.commands = new Discord.Collection();
 
 
@@ -25,7 +34,7 @@ for (const file of commandFiles) {
 
 client.once('ready', () => {
   console.log('Ready!');
-  //Section Below is commented out. It's function is to deliver cubes at specific times.
+  // Section Below is commented out. It's function is to deliver cubes at specific times.
   // var job = new CronJob('0 10,18 * * *', function() {
   //   temp = countLinesInFile(database, async (error, number) => {
   //     index = Math.floor(Math.random() * number) + 1;
@@ -41,9 +50,23 @@ client.once('ready', () => {
   //   });
   // }, null, true, 'America/Chicago');
   // job.start();
+
+  var backup = new CronJob('0,15,30,45 * * * *', function(){
+    // convert JSON object to a string
+    const data = JSON.stringify(cubes)
+
+    // write JSON string to a file
+    fs.writeFile(backupDatabase, data, err => {
+      if (err) {
+        throw err
+      }
+      console.log('Cubes File Backed Up.')
+    })
+  }, null, true, 'America/Chicago');
+  backup.start();
 });
 
-client.on('message', message => {
+client.on('messageCreate', message => {
   //console.log(message.content);
   if (!message.content.startsWith(prefix) || message.author.bot) {
     return;
@@ -60,7 +83,7 @@ client.on('message', message => {
   }
   success = false;
   try {
-    command.execute(message, args);
+    command.execute(Discord, message, args);
     success = true;
   } catch (error) {
     console.error(error);
@@ -69,7 +92,7 @@ client.on('message', message => {
   if (success && commandName == 'slurp') {
     success = false;
     try {
-      client.commands.get('gimme').execute(message, []);
+      client.commands.get('gimme').execute(Discord,message, []);
     } catch (error) {
       console.error(error);
       message.reply('Bonus Gimme Failed');

@@ -2,7 +2,7 @@ const weightedRandom = require('../helperModules/weightedRandom');
 module.exports = {
   name: 'gimme',
   description: 'return a specific quote',
-  async execute(message, args) {
+  async execute(Discord, message, args) {
     if (typeof cubes != 'undefined') {
       if (!args.length) {
         temp = weightedRandom.get(cubes);
@@ -11,8 +11,12 @@ module.exports = {
         message.channel.send(temp.cube.quote);
       } else {
         var index = parseInt(args[0]);
-        cubes.lastCubeIndex = index;
-        message.channel.send(cubes[index].quote);
+        if (index < cubes.length) {
+          cubes.lastCubeIndex = index;
+          message.channel.send(cubes[index].quote);
+        } else{
+          message.channel.send("Cube number out of bounds")
+        }
       }
     }
   },

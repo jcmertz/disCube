@@ -6,11 +6,13 @@ module.exports = {
   name: 'slurp',
   description: 'ingest new quotes',
   args: true,
-  execute(message, args) {
+  execute(Discord, message, args) {
     if (typeof cubes != 'undefined') {
       newCube = {};
       newCube.quote = args[0];
       newCube.score = 5;
+      newCube.slurper = message.author.username;
+      newCube.slurpTime = message.createdAt.toString();
       cubes.push(newCube);
       // convert JSON object to a string
       const data = JSON.stringify(cubes)
@@ -23,7 +25,8 @@ module.exports = {
         console.log('Cubes File Updated.')
       })
       console.log('Slurped!');
-      message.channel.send('Slurp.');
+      index = cubes.length-1
+      message.channel.send('Slurp. You are cube number '+index);
     }
   },
 };
