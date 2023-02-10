@@ -1,25 +1,23 @@
-fs = require('fs');
-const {
-  database
-} = require('../config.json');
-const nthline = require('nthline');
-const countLinesInFile = require('count-lines-in-file');
-async function sendMessage(index,channel){
-  msg = await nthline(index, database);
-  channel.channel.send(msg);
-}
+const weightedRandom = require('../helperModules/weightedRandom');
 module.exports = {
   name: 'gimme',
   description: 'return a specific quote',
-  async execute(message, args) {
-    if (!args.length) {
-      var temp = countLinesInFile(database, (error, number) => {
-        index = Math.floor(Math.random() * number) + 1;
-        sendMessage(index,message);
-      });
-    } else {
-      var temp = parseInt(args[0]);
-      sendMessage(temp,message);
+  async execute(Discord, message, args) {
+    if (typeof cubes != 'undefined') {
+      if (!args.length) {
+        temp = weightedRandom.get(cubes);
+        index = temp.index;
+        cubes.lastCubeIndex = index;
+        message.channel.send(temp.cube.quote);
+      } else {
+        var index = parseInt(args[0]);
+        if (index < cubes.length) {
+          cubes.lastCubeIndex = index;
+          message.channel.send(cubes[index].quote);
+        } else{
+          message.channel.send("Cube number out of bounds")
+        }
+      }
     }
   },
 };
